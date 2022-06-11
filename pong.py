@@ -24,7 +24,7 @@ paddle_b = turtle.Turtle()
 paddle_b.speed(0)
 paddle_b.shape('square')
 paddle_b.shapesize(stretch_wid=4,stretch_len=1)
-paddle_b.color('white')
+paddle_b.color('blue')
 paddle_b.penup()
 paddle_b.goto(350, 0)
 
@@ -34,11 +34,14 @@ ball = turtle.Turtle()
 ball.speed(0)
 ball.shape('circle')
 ball.color('white')
-ball.penup
+ball.penup()
 ball.goto(0, 0)
+ball.dx = .25
+ball.dy = .25
 
 # Functions
 
+# Paddle A movement
 def paddle_a_up():
     y = paddle_a.ycor()
     y += 10
@@ -49,6 +52,8 @@ def paddle_a_down():
     y -= 10
     paddle_a.sety(y)
 
+# Paddle B movement
+
 def paddle_b_up():
     y = paddle_b.ycor()
     y += 10
@@ -58,6 +63,8 @@ def paddle_b_down():
     y = paddle_b.ycor()
     y -= 10
     paddle_b.sety(y)
+
+
 
 # Key Binding
 wn.listen()
@@ -71,4 +78,41 @@ wn.onkeypress(paddle_b_down, 'Down')
 while True:
     wn.update()
 
+    # Ball movement
 
+    ball.setx(ball.xcor() + ball.dx)
+    ball.sety(ball.ycor() + ball.dy)
+
+
+    # Borders check
+
+    # Top & Bottom
+
+    if ball.ycor() > 290:
+        ball.sety(290)
+        ball.dy *= -1
+
+    if ball.ycor() < -290:
+        ball.sety(-290)
+        ball.dy *= -1
+
+    # Left & right
+
+    if ball.xcor() > 390:
+        ball.goto(0, 0)
+        ball.dx *= -1
+
+    if ball.xcor() < -390:
+        ball.goto(0, 0)
+        ball.dx *= -1
+
+    # Paddle Bounce
+    
+    if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < paddle_b.ycor() + 50 and ball.ycor() > paddle_b.ycor() - 50):
+        ball.setx(340)
+        ball.dx *= -1   
+    
+    if (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < paddle_a.ycor() + 50 and ball.ycor() > paddle_a.ycor() - 50):
+        ball.setx(-340)
+        ball.dx *= -1   
+    
