@@ -36,8 +36,29 @@ ball.shape('circle')
 ball.color('white')
 ball.penup()
 ball.goto(0, 0)
-ball.dx = .25
-ball.dy = .25
+ball.dx = .2
+ball.dy = .2
+
+# Score Board
+
+score_a = 0
+score_b = 0
+
+pen = turtle.Turtle()
+pen.speed(0)
+pen.color('white')
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 260)
+pen.write('score', align='center', font=('courier', 24, 'normal'))
+
+pen2 = turtle.Turtle()
+pen2.speed(0)
+pen2.color('white')
+pen2.penup()
+pen2.hideturtle()
+pen2.goto(0, 235)
+pen2.write('{}  |  {}'.format(score_a, score_b) , align='center', font=('courier', 24, 'normal'))
 
 # Functions
 
@@ -101,10 +122,18 @@ while True:
     if ball.xcor() > 390:
         ball.goto(0, 0)
         ball.dx *= -1
+        score_a += 1
+        pen2.clear()
+        pen2.write('{}  |  {}'.format(score_a, score_b) , align='center', font=('courier', 24, 'normal'))
+
 
     if ball.xcor() < -390:
         ball.goto(0, 0)
         ball.dx *= -1
+        score_b += 1
+        pen2.clear()
+        pen2.write('{}  |  {}'.format(score_a, score_b) , align='center', font=('courier', 24, 'normal'))
+
 
     # Paddle Bounce
     
