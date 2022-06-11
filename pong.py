@@ -32,6 +32,7 @@ paddle_b.goto(350, 0)
 
 ball = turtle.Turtle()
 ball.speed(0)
+ball.hideturtle()
 ball.shape('circle')
 ball.color('white')
 ball.penup()
@@ -44,21 +45,38 @@ ball.dy = .2
 score_a = 0
 score_b = 0
 
-pen = turtle.Turtle()
-pen.speed(0)
-pen.color('white')
-pen.penup()
-pen.hideturtle()
-pen.goto(0, 260)
-pen.write('score', align='center', font=('courier', 24, 'normal'))
+score = turtle.Turtle()
+score.speed(0)
+score.color('white')
+score.penup()
+score.hideturtle()
+score.goto(0, 260)
+score.write('score', align='center', font=('courier', 24, 'normal'))
 
-pen2 = turtle.Turtle()
-pen2.speed(0)
-pen2.color('white')
-pen2.penup()
-pen2.hideturtle()
-pen2.goto(0, 235)
-pen2.write('{}  |  {}'.format(score_a, score_b) , align='center', font=('courier', 24, 'normal'))
+score_value = turtle.Turtle()
+score_value.speed(0)
+score_value.color('white')
+score_value.penup()
+score_value.hideturtle()
+score_value.goto(0, 235)
+score_value.write('{}  |  {}'.format(score_a, score_b) , align='center', font=('courier', 24, 'normal'))
+
+# starting screen
+
+start = turtle.Turtle()
+start.speed(0)
+start.color('white')
+start.penup()
+start.hideturtle()
+start.goto(0, 0)
+start.write('Press Space Bar to start', align='center', font=('courier', 24, 'normal'))
+
+# Winner Screen
+winner = turtle.Turtle()
+winner.speed(0)
+winner.penup()
+winner.hideturtle()
+winner.goto(0, 35)
 
 # Functions
 
@@ -85,63 +103,112 @@ def paddle_b_down():
     y -= 10
     paddle_b.sety(y)
 
+# Start Game 
+
+start_game = False
+
+def game_start():
+    global score_a
+    global score_b
+    score_a = 0
+    score_b = 0
+    score_value.clear()
+    score_value.write('{}  |  {}'.format(score_a, score_b) , align='center', font=('courier', 24, 'normal'))
+    start.clear()
+    winner.clear()
+    ball.showturtle()
+    paddle_a.sety(0)
+    paddle_b.sety(0)
+    global start_game 
+    start_game = True
+
 
 
 # Key Binding
 wn.listen()
-wn.onkeypress(paddle_a_up, 'w')
-wn.onkeypress(paddle_a_down, 's')
-wn.onkeypress(paddle_b_up, 'Up')
-wn.onkeypress(paddle_b_down, 'Down')
+
+# Start
+wn.onkeypress(game_start, 'space')
+
+# if start_game:
+
 
 
 # Main Game Loop
 while True:
     wn.update()
 
-    # Ball movement
-
-    ball.setx(ball.xcor() + ball.dx)
-    ball.sety(ball.ycor() + ball.dy)
+    if start_game:
 
 
-    # Borders check
+        # Movement
+        wn.onkeypress(paddle_a_up, 'w')
+        wn.onkeypress(paddle_a_down, 's')
+        wn.onkeypress(paddle_b_up, 'Up')
+        wn.onkeypress(paddle_b_down, 'Down')
 
-    # Top & Bottom
+        # Ball movement
 
-    if ball.ycor() > 290:
-        ball.sety(290)
-        ball.dy *= -1
-
-    if ball.ycor() < -290:
-        ball.sety(-290)
-        ball.dy *= -1
-
-    # Left & right
-
-    if ball.xcor() > 390:
-        ball.goto(0, 0)
-        ball.dx *= -1
-        score_a += 1
-        pen2.clear()
-        pen2.write('{}  |  {}'.format(score_a, score_b) , align='center', font=('courier', 24, 'normal'))
+        ball.setx(ball.xcor() + ball.dx)
+        ball.sety(ball.ycor() + ball.dy)
 
 
-    if ball.xcor() < -390:
-        ball.goto(0, 0)
-        ball.dx *= -1
-        score_b += 1
-        pen2.clear()
-        pen2.write('{}  |  {}'.format(score_a, score_b) , align='center', font=('courier', 24, 'normal'))
+        # Borders check
+
+        # Top & Bottom
+
+        if ball.ycor() > 290:
+            ball.sety(290)
+            ball.dy *= -1
+
+        if ball.ycor() < -290:
+            ball.sety(-290)
+            ball.dy *= -1
+
+        # Left & right
+
+        if ball.xcor() > 390:
+            ball.goto(0, 0)
+            ball.dx *= -1
+            score_a += 1
+            score_value.clear()
+            score_value.write('{}  |  {}'.format(score_a, score_b) , align='center', font=('courier', 24, 'normal'))
 
 
-    # Paddle Bounce
-    
-    if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < paddle_b.ycor() + 50 and ball.ycor() > paddle_b.ycor() - 50):
-        ball.setx(340)
-        ball.dx *= -1   
-    
-    if (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < paddle_a.ycor() + 50 and ball.ycor() > paddle_a.ycor() - 50):
-        ball.setx(-340)
-        ball.dx *= -1   
-    
+        if ball.xcor() < -390:
+            ball.goto(0, 0)
+            ball.dx *= -1
+            score_b += 1
+            score_value.clear()
+            score_value.write('{}  |  {}'.format(score_a, score_b) , align='center', font=('courier', 24, 'normal'))
+
+
+        # Paddle Bounce
+        
+        if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < paddle_b.ycor() + 50 and ball.ycor() > paddle_b.ycor() - 50):
+            ball.setx(340)
+            ball.dx *= -1   
+        
+        if (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < paddle_a.ycor() + 50 and ball.ycor() > paddle_a.ycor() - 50):
+            ball.setx(-340)
+            ball.dx *= -1   
+        
+
+        # Winner
+
+        if score_a == 5:
+            start_game = False
+            start.write('Press Space Bar to restart', align='center', font=('courier', 24, 'normal'))
+            winner.color('red')
+            winner.write('Player A Wins!', align='center', font=('courier', 24, 'normal'))
+            ball.hideturtle()
+
+        if score_b == 5:
+            start_game = False
+            start.write('Press Space Bar to restart', align='center', font=('courier', 24, 'normal'))
+            winner.color('blue')
+            winner.write('Player B Wins!', align='center', font=('courier', 24, 'normal'))
+            ball.hideturtle()
+
+            
+
