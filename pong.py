@@ -37,8 +37,8 @@ ball.shape('circle')
 ball.color('white')
 ball.penup()
 ball.goto(0, 0)
-ball.dx = .2
-ball.dy = .2
+ball.dx = .35
+ball.dy = .35
 
 # Score Board
 
@@ -72,6 +72,7 @@ start.goto(0, 0)
 start.write('Press Space Bar to start', align='center', font=('courier', 24, 'normal'))
 
 # Winner Screen
+
 winner = turtle.Turtle()
 winner.speed(0)
 winner.penup()
@@ -81,27 +82,40 @@ winner.goto(0, 35)
 # Functions
 
 # Paddle A movement
+
 def paddle_a_up():
-    y = paddle_a.ycor()
-    y += 10
-    paddle_a.sety(y)
+    if paddle_a.ycor() < 260:
+        y = paddle_a.ycor()
+        y += 30
+        paddle_a.sety(y)
+    else:
+        paddle_a.sety(260)
 
 def paddle_a_down():
-    y = paddle_a.ycor()
-    y -= 10
-    paddle_a.sety(y)
+    if paddle_a.ycor() > -250:
+        y = paddle_a.ycor()
+        y -= 30
+        paddle_a.sety(y)
+    else:
+        paddle_a.sety(-250)
 
 # Paddle B movement
 
 def paddle_b_up():
-    y = paddle_b.ycor()
-    y += 10
-    paddle_b.sety(y)
+    if paddle_b.ycor() < 260:
+        y = paddle_b.ycor()
+        y += 30
+        paddle_b.sety(y)
+    else:
+        paddle_b.sety(260)   
 
 def paddle_b_down():
-    y = paddle_b.ycor()
-    y -= 10
-    paddle_b.sety(y)
+    if paddle_b.ycor() > -250:
+        y = paddle_b.ycor()
+        y -= 30
+        paddle_b.sety(y)
+    else:
+        paddle_b.sety(-250)
 
 # Start Game 
 
@@ -125,16 +139,12 @@ def game_start():
 
 
 # Key Binding
-wn.listen()
 
-# Start
+wn.listen()
 wn.onkeypress(game_start, 'space')
 
-# if start_game:
-
-
-
 # Main Game Loop
+
 while True:
     wn.update()
 
@@ -142,6 +152,7 @@ while True:
 
 
         # Movement
+        
         wn.onkeypress(paddle_a_up, 'w')
         wn.onkeypress(paddle_a_down, 's')
         wn.onkeypress(paddle_b_up, 'Up')
@@ -185,11 +196,11 @@ while True:
 
         # Paddle Bounce
         
-        if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < paddle_b.ycor() + 50 and ball.ycor() > paddle_b.ycor() - 50):
+        if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < paddle_b.ycor() + 40 and ball.ycor() > paddle_b.ycor() - 40):
             ball.setx(340)
             ball.dx *= -1   
         
-        if (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < paddle_a.ycor() + 50 and ball.ycor() > paddle_a.ycor() - 50):
+        if (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < paddle_a.ycor() + 40 and ball.ycor() > paddle_a.ycor() - 40):
             ball.setx(-340)
             ball.dx *= -1   
         
